@@ -1,3 +1,6 @@
+# TODO: 2D density map (see https://docs.scipy.org/doc/numpy/reference/generated/numpy.meshgrid.html)
+# TODO: make derivative hypothesis more intuitive (e.g., derivative(self, otherCube, h=0.0001))
+
 class Cube:
     def __init__(self, cube_file):
         """
@@ -75,6 +78,19 @@ class Cube:
         return self._cube_grid
 
 
+    def symmetric_derivative(self, otherCube, h=0.0001):
+        """
+        Computes the numerical derivative of the quantity represented in the CUBE files.
+        :param otherCube:
+        :param h:
+        :return: 3D grid containing the derivatives
+        """
+
+
+        deriv = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
+
+        return deriv
+
 
     def plot_isosurface(self, iso_value, alpha = 0.5):
         """
@@ -92,8 +108,8 @@ class Cube:
 
             return verts, faces
 
-
         from matplotlib import pyplot as plt
+        from mpl_toolkits.mplot3d import Axes3D
         from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
         # Compute the isosurface contour
@@ -123,19 +139,26 @@ class Cube:
         return plt.show()
 
 
-    def plot_density_map(self, alpha=0.3, threshold=0.0):
+    def plot_density_map(self, normalized = True, alpha=0.3, threshold=0.0):
         """
         Plots the electronic density map of the orbital.
         """
+        from mpl_toolkits.mplot3d import Axes3D
         from matplotlib import pyplot as plt
         import numpy as np
+        import copy
 
         X, Y, Z = np.mgrid[0:self._n[0], 0:self._n[1], 0:self._n[2]] * self._dx[0]
         X = X + self._origin[0]
         Y = Y + self._origin[1]
         Z = Z + self._origin[2]
 
-        cube_grid = self._cube_grid / self._cube_grid.max()
+        if normalized:
+            cube_grid = self._cube_grid / cube_grid.max()
+        else:
+            cube_grid = self._cube_grid
+
+
         cube_grid[cube_grid <= threshold] = np.NaN
 
         # Create the plot instance and plot the data
