@@ -1,4 +1,6 @@
 # CUBElib
+
+### Introduction
 Python library to read, manipulate and visualize files in the CUBE format.
 
 
@@ -25,4 +27,8 @@ deriv2.plot_density_map(normed=False)
 
 ![GitHub Logo](/figures/orbital_isosurface_example.png)
 Format: ![Alt Text](url)
+
+### Symmetric derivatives
+
+Let us consider the electronic density of given orbital  <img src="https://latex.codecogs.com/gif.latex? \phi_\alpha " />  where <img src="https://latex.codecogs.com/gif.latex? \alpha " /> is the atom to which this orbital belongs. 
 
