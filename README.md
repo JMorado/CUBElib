@@ -22,3 +22,7 @@ deriv2 = Cube("o4_ngwf01_hminus_600")
 deriv2._cube_grid = sym_deriv
 deriv2.plot_density_map(normed=False)
 ```
+
+![GitHub Logo](/figures/orbital_isosurface_example.png)
+Format: ![Alt Text](url)
+
