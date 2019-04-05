@@ -88,6 +88,15 @@ class Cube:
 
         return derivative
 
+    def grid_difference(self, otherCube):
+        """
+        Computes the difference between
+        :param otherCube
+        :return: 3D grid containing the difference between self and otherCube grids.
+        """
+
+        return self._cube_grid - otherCube._cube_grid
+
     def plot_isosurface(self, iso_value, alpha = 0.5):
         """
 
