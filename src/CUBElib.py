@@ -19,7 +19,6 @@ class Cube:
         else:
             raise Exception("File {} wat not found.".format(str(cube_file)))
 
-
     def __str__(self):
         return "This object contains the CUBE file with name: " + str(self._file_name) + "."
 
@@ -54,7 +53,6 @@ class Cube:
             self._n[i] = int(file_data[i+3].split()[0])
             self._dx[i] = float(file_data[i+3].split()[i+1])
 
-
         self._cube_grid = np.ones((self._n[0],self._n[1],self._n[2]))
 
         if self._n[2] % 6 == 0:
@@ -86,11 +84,9 @@ class Cube:
         :return: 3D grid containing the derivatives
         """
 
+        derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
 
-        deriv = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
-
-        return deriv
-
+        return derivative
 
     def plot_isosurface(self, iso_value, alpha = 0.5):
         """
@@ -139,7 +135,7 @@ class Cube:
         return plt.show()
 
 
-    def plot_density_map(self, normalized = True, alpha=0.3, threshold=0.0):
+    def plot_density_map(self, normalized = True, alpha=0.3, threshold=0.05, title = "Orbital Electronic Density"):
         """
         Plots the electronic density map of the orbital.
         """
@@ -153,28 +149,28 @@ class Cube:
         Y = Y + self._origin[1]
         Z = Z + self._origin[2]
 
+        # Deepcopy in order to avoid modifying the original grid
         if normalized:
-            cube_grid = self._cube_grid / cube_grid.max()
+            cube_grid = copy.deepcopy(self._cube_grid) / self._cube_grid.max()
         else:
-            cube_grid = self._cube_grid
+            cube_grid = copy.deepcopy(self._cube_grid)
 
-
-        cube_grid[cube_grid <= threshold] = np.NaN
+        cube_grid[abs(cube_grid) <= threshold] = np.NaN
 
         # Create the plot instance and plot the data
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        density_scatter = ax.scatter(X, Y, Z, c=cube_grid.flatten(), alpha=alpha, cmap="hot")
+        density_scatter = ax.scatter(X, Y, Z, c=cube_grid.flatten(), alpha=alpha, cmap="seismic")
 
         # Customize the plot
-        ax.set_title("Orbital Electronic Density")
+        ax.set_title(title)
         ax.set_xlim(X.min()-5,X.max()+5)
         ax.set_ylim(Y.min()-5,Y.max()+5)
         ax.set_zlim(Z.min()-5,Z.max()+5)
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
         ax.set_zlabel("Z")
-        fig.colorbar(density_scatter)
-        plt.tight_layout()
+        cbar = fig.colorbar(density_scatter,fraction=0.046, pad=0.04)
+        cbar.set_label(r'$\AA^{-1}$', rotation=270)
 
         return plt.show()
