@@ -30,5 +30,5 @@ Format: ![Alt Text](url)
 
 ### Symmetric derivatives
 
-Let us consider the electronic density of given orbital  <img src="https://latex.codecogs.com/gif.latex? \phi_\alpha " />  where <img src="https://latex.codecogs.com/gif.latex? \alpha " /> is the atom to which this orbital belongs. 
+Let us consider the electronic density of given orbital  <a href="https://www.codecogs.com/eqnedit.php?latex=\phi_alpha" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\phi_i" title="\phi_alpha" /></a>  where i is the atom to which this orbital belongs. We can compute the derivative of the electronic density with respect to the atomic displacements along a given Cartesian component 
 

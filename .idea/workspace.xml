@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="67d94fde-2557-4f56-bd77-9c85097a64ce" name="Default Changelist" comment="Updated the library">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CUBElib.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/CUBElib.py" afterDir="false" />
+    <list default="true" id="67d94fde-2557-4f56-bd77-9c85097a64ce" name="Default Changelist" comment="Grid difference included.">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,11 +12,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CUBElib.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
+            <state relative-caret-position="350">
+              <caret line="110" lean-forward="true" selection-start-line="110" selection-end-line="110" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="480">
+                <caret line="32" column="232" selection-start-line="32" selection-start-column="232" selection-end-line="32" selection-end-column="232" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -56,6 +67,7 @@
         <option value="$PROJECT_DIR$/CUBElib.py" />
         <option value="$PROJECT_DIR$/tests/test.py" />
         <option value="$PROJECT_DIR$/src/CUBElib.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -205,7 +217,7 @@
       <option name="presentableId" value="Default" />
       <updated>1554463487680</updated>
       <workItem from="1554463518529" duration="346000" />
-      <workItem from="1554473338001" duration="3671000" />
+      <workItem from="1554473338001" duration="4081000" />
     </task>
     <task id="LOCAL-00001" summary="Updated the library">
       <created>1554477247894</created>
@@ -214,17 +226,24 @@
       <option name="project" value="LOCAL" />
       <updated>1554477247894</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Grid difference included.">
+      <created>1554477776814</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1554477776814</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4017000" />
+    <option name="totallyTimeSpent" value="4427000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1680" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.32425213" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32425213" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -236,7 +255,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32928178" />
       <window_info anchor="bottom" id="Educational.CheckDetails" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49946582" visible="true" weight="0.32800853" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49946582" visible="true" weight="0.32800853" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32928178" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
@@ -293,7 +312,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated the library" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the library" />
+    <MESSAGE value="Grid difference included." />
+    <option name="LAST_COMMIT_MESSAGE" value="Grid difference included." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CUBElib$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1554474512807" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
@@ -310,8 +330,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CUBElib.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
+        <state relative-caret-position="350">
+          <caret line="110" lean-forward="true" selection-start-line="110" selection-end-line="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="480">
+            <caret line="32" column="232" selection-start-line="32" selection-start-column="232" selection-end-line="32" selection-end-column="232" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
