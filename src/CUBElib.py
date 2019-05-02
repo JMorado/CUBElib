@@ -1,5 +1,6 @@
 # TODO: 2D density map (see https://docs.scipy.org/doc/numpy/reference/generated/numpy.meshgrid.html)
 # TODO: make derivative hypothesis more intuitive (e.g., derivative(self, otherCube, h=0.0001))
+import numpy as np
 
 class Cube:
     def __init__(self, cube_file):
@@ -12,6 +13,11 @@ class Cube:
         self._dx = [None, None, None]
         self._natoms = None
         self._cube_grid = None
+        self._coordinates = None
+        self._atomic_numbers = None
+        self._nuclear_charge = None
+        self._bohr_to_angstrom = 0.529177249
+        self._units = None
 
         if self._cube_file_exists(cube_file):
             self._cube_file = cube_file
@@ -38,11 +44,9 @@ class Cube:
         """
         TODO: write description
         """
-        import numpy as np
 
         f = open(self._cube_file, 'r')
         file_data = f.readlines()
-
         self._natoms = int(file_data[2].split()[0])
 
         for i in range(3):
@@ -53,7 +57,25 @@ class Cube:
             self._n[i] = int(file_data[i+3].split()[0])
             self._dx[i] = float(file_data[i+3].split()[i+1])
 
+        # If the sign of the number of voxels in a dimension is positive then the units are Bohr,
+        # If negative then Angstroms.
+        if np.sign(self._n[0]) > 0:
+            self._units = "BOHR"
+        else:
+            self._units = "ANGSTROM"
+
         self._cube_grid = np.ones((self._n[0],self._n[1],self._n[2]))
+
+        # Read the coordinates, atomic numbers and nuclear charge
+        self._coordinates = [[None, None, None] for x in range(self._natoms)]
+        self._atomic_numbers = [None for x in range(self._natoms)]
+        self._nuclear_charge = [None for x in range(self._natoms)]
+
+        for i in range(self._natoms):
+            self._atomic_numbers[i] = int(file_data[i+6].split()[0])
+            self._nuclear_charge[i] = float(file_data[i+6].split()[1])
+            for j in range(3):
+                self._coordinates[i][j] = float(file_data[i+6].split()[2+j])
 
         if self._n[2] % 6 == 0:
             nlines = self._n[2] // 6
@@ -75,6 +97,67 @@ class Cube:
 
         return self._cube_grid
 
+    def _write_cube_file(self, file_name = "output.cube"):
+        """
+        """
+
+        f = open(file_name, 'w')
+
+        f.write(" CUBElib generated cube file \n")
+        f.write(" by Joao Morado \n")
+        f.write("{:4d} {:12.5f} {:12.5f} {:12.5f} \n".format(self._natoms, *self._origin))
+
+        for i in range(3):
+            dxTmp = [0.0, 0.0, 0.0]
+            dxTmp[i] = self._dx[i]
+            f.write("{:4d} {:12.5f} {:12.5f} {:12.5f} \n".format(self._n[i], *dxTmp))
+
+        for i in range(self._natoms):
+            f.write("{:4d} {:12.5f} {:12.5f} {:12.5f} {:12.5f} \n".format(self._atomic_numbers[i], self._nuclear_charge[i], *self._coordinates[i]))  # CHANGE TO self._dx
+
+        # Write the CUBE file grid data
+        if self._n[2] % 6 == 0:
+            nlines = self._n[2] // 6
+        else:
+            nlines = self._n[2] // 6 + 1
+
+
+        line = self._natoms + 6
+        for x in range(self._n[0]):
+            for y in range(self._n[1]):
+                for j in range(nlines):
+                    count = 0
+                    line_data = self._cube_grid[x,y,j*6:(j+1)*6]
+                    string_to_write = "{:13.5E}" * len(line_data)
+                    string_to_write = string_to_write.format(*line_data)
+                    string_to_write = string_to_write + "\n"
+                    f.write(string_to_write)
+
+        return self._cube_grid
+
+    def dot_product(self, otherCube):
+        """
+        This method performs the dot product between self._cube_grid and otherCube._cube_grid
+        :param otherCube:
+        :return:
+        """
+        # Assert that dimensions coincide
+        for i in range(3):
+            assert self._n[i] == otherCube._n[i], "Size of dimension {} does not match.".format(i)
+
+        product = self._cube_grid * otherCube._cube_grid
+        dot = 0
+        for x in range(self._n[0]):
+            for y in range(self._n[1]):
+                for z in range(self._n[2]):
+                    dot += product[x,y,z] # self._cube_grid[x,y,z] * otherCube._cube_grid[x,y,z]
+
+        if self._units == "BOHR":
+            return dot * self._dx[0] * self._dx[1] * self._dx[2] * self._bohr_to_angstrom ** 3
+        elif self._units == "ANGSTROM":
+            return dot * self._dx[0] * self._dx[1] * self._dx[2]
+        else:
+            return "Something is wrong... unit {} is not implemented.".format(self._units)
 
     def symmetric_derivative(self, otherCube, h=0.0001):
         """
@@ -83,10 +166,16 @@ class Cube:
         :param h:
         :return: 3D grid containing the derivatives
         """
+        import copy
 
         derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
 
-        return derivative
+        newCube = copy.deepcopy(self)
+        newCube._coordinates = (np.asarray(self._coordinates) + np.asarray(otherCube._coordinates)) / 2.0
+        newCube._cube_grid = derivative
+        newCube._write_cube_file("symmetric_derivative.cube")
+
+        return newCube
 
     def grid_difference(self, otherCube):
         """
@@ -150,7 +239,6 @@ class Cube:
         """
         from mpl_toolkits.mplot3d import Axes3D
         from matplotlib import pyplot as plt
-        import numpy as np
         import copy
 
         X, Y, Z = np.mgrid[0:self._n[0], 0:self._n[1], 0:self._n[2]] * self._dx[0]
