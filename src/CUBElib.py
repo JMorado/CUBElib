@@ -16,6 +16,8 @@ class Cube:
         self._coordinates = None
         self._atomic_numbers = None
         self._nuclear_charge = None
+
+        # Variables that control the units
         self._bohr_to_angstrom = 0.529177249
         self._units = None
 
@@ -31,6 +33,7 @@ class Cube:
     def __repr__(self):
         return "This object contains the CUBE file with name: " + str(self._file_name) + "."
 
+    @classmethod
     def _cube_file_exists(self, cube_file):
         """
         :param cube_file: Name of cube file.
@@ -95,6 +98,7 @@ class Cube:
 
                     line += 1
 
+        f.close()
         return self._cube_grid
 
     def _write_cube_file(self, file_name = "output.cube"):
@@ -121,7 +125,6 @@ class Cube:
         else:
             nlines = self._n[2] // 6 + 1
 
-
         line = self._natoms + 6
         for x in range(self._n[0]):
             for y in range(self._n[1]):
@@ -132,6 +135,7 @@ class Cube:
                     string_to_write = string_to_write.format(*line_data)
                     string_to_write = string_to_write + "\n"
                     f.write(string_to_write)
+        f.close()
 
         return self._cube_grid
 
@@ -153,7 +157,7 @@ class Cube:
                     dot += product[x,y,z] # self._cube_grid[x,y,z] * otherCube._cube_grid[x,y,z]
 
         if self._units == "BOHR":
-            return dot * self._dx[0] * self._dx[1] * self._dx[2] * self._bohr_to_angstrom ** 3
+            return dot * self._dx[0] * self._dx[1] * self._dx[2] #* self._bohr_to_angstrom ** 3
         elif self._units == "ANGSTROM":
             return dot * self._dx[0] * self._dx[1] * self._dx[2]
         else:
@@ -168,12 +172,11 @@ class Cube:
         """
         import copy
 
-        derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
+        derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h / self._bohr_to_angstrom)
 
         newCube = copy.deepcopy(self)
         newCube._coordinates = (np.asarray(self._coordinates) + np.asarray(otherCube._coordinates)) / 2.0
         newCube._cube_grid = derivative
-        newCube._write_cube_file("symmetric_derivative.cube")
 
         return newCube
 
