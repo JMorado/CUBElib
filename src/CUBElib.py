@@ -235,7 +235,6 @@ class Cube:
 
         return plt.show()
 
-
     def plot_density_map(self, normalized = True, alpha=0.3, threshold=0.05, title = "Orbital Electronic Density"):
         """
         Plots the electronic density map of the orbital.
