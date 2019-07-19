@@ -28,10 +28,10 @@ class Cube:
             raise Exception("File {} wat not found.".format(str(cube_file)))
 
     def __str__(self):
-        return "This object contains the CUBE file with name: " + str(self._file_name) + "."
+        return "This object contains the CUBE file with name: "#+ str(self._file_name) + "."
 
     def __repr__(self):
-        return "This object contains the CUBE file with name: " + str(self._file_name) + "."
+        return "This object contains the CUBE file with name: "# + str(self._file_name) + "."
 
     @classmethod
     def _cube_file_exists(self, cube_file):
@@ -101,7 +101,7 @@ class Cube:
         f.close()
         return self._cube_grid
 
-    def _write_cube_file(self, file_name = "output.cube"):
+    def write_cube_file(self, file_name = "output.cube"):
         """
         """
 
@@ -125,12 +125,10 @@ class Cube:
         else:
             nlines = self._n[2] // 6 + 1
 
-        line = self._natoms + 6
         for x in range(self._n[0]):
             for y in range(self._n[1]):
-                for j in range(nlines):
-                    count = 0
-                    line_data = self._cube_grid[x,y,j*6:(j+1)*6]
+                for z in range(nlines):
+                    line_data = self._cube_grid[x,y,z*6:(z+1)*6]
                     string_to_write = "{:13.5E}" * len(line_data)
                     string_to_write = string_to_write.format(*line_data)
                     string_to_write = string_to_write + "\n"
@@ -154,10 +152,10 @@ class Cube:
         for x in range(self._n[0]):
             for y in range(self._n[1]):
                 for z in range(self._n[2]):
-                    dot += product[x,y,z] # self._cube_grid[x,y,z] * otherCube._cube_grid[x,y,z]
+                    dot += product[x,y,z]
 
         if self._units == "BOHR":
-            return dot * self._dx[0] * self._dx[1] * self._dx[2] #* self._bohr_to_angstrom ** 3
+            return dot # / ( self._dx[0] * self._dx[1] * self._dx[2] ) #/ (self._bohr_to_angstrom ** 3)
         elif self._units == "ANGSTROM":
             return dot * self._dx[0] * self._dx[1] * self._dx[2]
         else:
@@ -172,8 +170,7 @@ class Cube:
         """
         import copy
 
-        derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h / self._bohr_to_angstrom)
-
+        derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
         newCube = copy.deepcopy(self)
         newCube._coordinates = (np.asarray(self._coordinates) + np.asarray(otherCube._coordinates)) / 2.0
         newCube._cube_grid = derivative
