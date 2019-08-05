@@ -147,17 +147,19 @@ class Cube:
         for i in range(3):
             assert self._n[i] == otherCube._n[i], "Size of dimension {} does not match.".format(i)
 
+
         product = self._cube_grid * otherCube._cube_grid
         dot = 0
+
         for x in range(self._n[0]):
             for y in range(self._n[1]):
                 for z in range(self._n[2]):
                     dot += product[x,y,z]
 
         if self._units == "BOHR":
-            return dot # / ( self._dx[0] * self._dx[1] * self._dx[2] ) #/ (self._bohr_to_angstrom ** 3)
+            return dot
         elif self._units == "ANGSTROM":
-            return dot * self._dx[0] * self._dx[1] * self._dx[2]
+            return dot
         else:
             return "Something is wrong... unit {} is not implemented.".format(self._units)
 
@@ -173,7 +175,9 @@ class Cube:
         derivative = (self._cube_grid - otherCube._cube_grid) / (2.0 * h)
         newCube = copy.deepcopy(self)
         newCube._coordinates = (np.asarray(self._coordinates) + np.asarray(otherCube._coordinates)) / 2.0
-        newCube._cube_grid = derivative
+
+        # Onetep actually prints minus the derivative
+        newCube._cube_grid = - derivative
 
         return newCube
 
